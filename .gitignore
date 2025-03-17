@@ -1,4 +1,7 @@
 # Miscellaneous
+*~
+*.bak
+*.swo
 *.class
 *.log
 *.pyc
