@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:spacehub/controllers/auth/password_visibility_controller.dart';
 import 'package:spacehub/core/validators/email_validator.dart';
 import 'package:spacehub/core/validators/password_validator.dart';
+import 'package:spacehub/view/screens/auth/signup_screen.dart';
 import 'package:spacehub/view/screens/widgets/top_right_toast.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
@@ -165,7 +166,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.grey.shade600),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignupScreen()));
+                        },
                         child: Text(
                           'SIGN UP',
                           style: TextStyle(
