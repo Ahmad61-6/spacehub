@@ -3,6 +3,7 @@ import 'package:spacehub/view/utility/app_colors.dart';
 
 class AppTheme {
   ThemeData appThemeData = ThemeData(
+    scaffoldBackgroundColor: AppColors.appBackground,
     fontFamily: 'FiraSans',
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

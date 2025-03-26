@@ -1,3 +1,3 @@
-import 'package:spacehub/services/auth/auth_service.dart';
+import 'package:spacehub/core/models/auth/auth_response.dart';
 
-class AuthError extends AuthService {}
+class AuthError extends AuthResponse {}

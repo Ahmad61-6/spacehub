@@ -8,6 +8,7 @@ import 'package:spacehub/view/utility/assets_path.dart';
 import '../../../core/validators/email_validator.dart';
 import '../../../core/validators/password_validator.dart';
 import '../../utility/app_colors.dart';
+import '../widgets/common_auth_app_bar.dart';
 import '../widgets/login_other_options_container.dart';
 import '../widgets/top_right_toast.dart';
 
@@ -37,26 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black87,
-                          size: 30,
-                        ),
-                      ),
-                      Image.asset(
-                        AssetsPath.appLogo,
-                        scale: .5,
-                        height: 60,
-                      ),
-                    ],
-                  ),
+                  CommonAuthAppBar(),
                   const SizedBox(height: 10),
                   Center(
                     child: Text(

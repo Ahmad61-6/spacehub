@@ -5,4 +5,5 @@ class AppColors {
   static const Color buttonColor = Color(0xFF647AFF);
   static const Color appBackground = Color(0xFFFFFFFF);
   static const Color otherLoginOptBackgroundColor = Color(0xFF647AFF);
+  static const Color constTextColor = Color(0xFF27252E);
 }
