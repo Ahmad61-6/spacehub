@@ -34,6 +34,7 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
           selectedItemColor: AppColors.buttonColor,
           unselectedItemColor: AppColors.iconsCommonColor,
           showUnselectedLabels: true,
+          backgroundColor: AppColors.appBackground,
           items: [
             BottomNavigationBarItem(
                 icon: Image.asset(AssetsPath.homeIcon), label: ''),
