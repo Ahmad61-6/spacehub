@@ -4,6 +4,7 @@ class AssetsPath {
   static const String googleLogo = 'assets/icons/google.png';
   static const String facebookLogo = 'assets/icons/facebook.png';
   static const String xLogo = 'assets/icons/x_logo.jpg';
+  static const String workSpace = 'assets/images/work_space.jpg';
   static const String searchbarIcon = 'assets/icons/search_bar_icon.png';
   static const String voiceIcon = 'assets/icons/voice_icon.png';
   static const String homeIcon = 'assets/icons/bottom_nav_icons/home_icon.png';

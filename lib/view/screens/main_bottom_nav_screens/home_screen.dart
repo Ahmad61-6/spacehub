@@ -4,6 +4,7 @@ import 'package:spacehub/controllers/category_controller.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
 
 import '../../utility/app_colors.dart';
+import '../widgets/work_space/work_space_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,94 +26,91 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _homeScreenAppBar(),
       backgroundColor: AppColors.appBackground,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                _homeScreenSearchBar(),
-                const SizedBox(height: 24),
-                const Text(
-                  "Category",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 12),
-                GetBuilder<CategoryController>(
-                  builder: (controller) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: ['Private', 'Office', 'Space']
-                          .map(
-                            (category) => GestureDetector(
-                              onTap: () => controller.selectCategory(category),
-                              child: Container(
-                                width: 105,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 29,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: controller.selectedCategory == category
-                                      ? AppColors.buttonColor
-                                      : AppColors.buttonColor
-                                          .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  category,
-                                  style: TextStyle(
+        child: Column(
+          children: [
+            // Fixed-height header section
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  _homeScreenSearchBar(),
+                  const SizedBox(height: 24),
+                  const Text(
+                    "Category",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 12),
+                  GetBuilder<CategoryController>(
+                    builder: (controller) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: ['Private', 'Office', 'Space']
+                            .map(
+                              (category) => GestureDetector(
+                                onTap: () =>
+                                    controller.selectCategory(category),
+                                child: Container(
+                                  width: 105,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 29,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
                                     color:
                                         controller.selectedCategory == category
-                                            ? Colors.white
-                                            : Colors.black,
+                                            ? AppColors.buttonColor
+                                            : AppColors.buttonColor
+                                                .withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    category,
+                                    style: TextStyle(
+                                      color: controller.selectedCategory ==
+                                              category
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                    );
-                  },
-                ),
-                const SizedBox(height: 28),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Recommendation',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'see all',
-                      style: TextStyle(color: AppColors.buttonColor),
-                    )
-                  ],
-                ),
-                GetBuilder<CategoryController>(
-                  builder: (controller) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height *
-                          0.6, // Adjust as needed
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.currentItems.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(controller.currentItems[index]),
-                            leading: const Icon(Icons.circle, size: 12),
-                          );
-                        },
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 28),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Recommendation',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    );
-                  },
-                ),
-              ],
+                      Text(
+                        'see all',
+                        style: TextStyle(color: AppColors.buttonColor),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
             ),
-          ),
+            // Expanded ListView that takes remaining space
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                itemCount: 5, // Replace with your actual item count
+                itemBuilder: (context, index) {
+                  return WorkSpaceItem();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -169,14 +167,14 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 'Search',
                 style: TextStyle(
-                  color: AppColors.iconsCommonColor.withValues(alpha: (0.8)),
+                  color: AppColors.iconsCommonColor.withOpacity(0.8),
                   fontSize: 16,
                 ),
               ),
             ]),
             Icon(
               Icons.keyboard_voice_outlined,
-              color: AppColors.iconsCommonColor.withValues(alpha: (0.8)),
+              color: AppColors.iconsCommonColor.withOpacity(0.8),
             ),
           ],
         ),
