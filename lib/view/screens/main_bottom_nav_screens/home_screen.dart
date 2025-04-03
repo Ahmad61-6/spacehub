@@ -4,7 +4,7 @@ import 'package:spacehub/controllers/category_controller.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
 
 import '../../utility/app_colors.dart';
-import '../widgets/work_space/work_space_item.dart';
+import '../../widgets/work_space/work_space_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

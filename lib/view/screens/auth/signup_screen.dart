@@ -8,9 +8,9 @@ import 'package:spacehub/view/utility/assets_path.dart';
 import '../../../core/validators/email_validator.dart';
 import '../../../core/validators/password_validator.dart';
 import '../../utility/app_colors.dart';
-import '../widgets/common_auth_app_bar.dart';
-import '../widgets/login_other_options_container.dart';
-import '../widgets/top_right_toast.dart';
+import '../../widgets/common_auth_app_bar.dart';
+import '../../widgets/login_other_options_container.dart';
+import '../../widgets/top_right_toast.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});

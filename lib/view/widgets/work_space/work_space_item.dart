@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacehub/view/screens/work_space_details_screen.dart';
 
-import '../../../utility/app_colors.dart';
-import '../../../utility/assets_path.dart';
+import '../../utility/app_colors.dart';
+import '../../utility/assets_path.dart';
 
 class WorkSpaceItem extends StatelessWidget {
   const WorkSpaceItem({

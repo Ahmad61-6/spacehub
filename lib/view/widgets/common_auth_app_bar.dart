@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utility/assets_path.dart';
+import '../utility/assets_path.dart';
 
 class CommonAuthAppBar extends StatelessWidget {
   final String? appBarTitle;
