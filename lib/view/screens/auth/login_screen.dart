@@ -5,11 +5,11 @@ import 'package:spacehub/core/validators/email_validator.dart';
 import 'package:spacehub/core/validators/password_validator.dart';
 import 'package:spacehub/view/screens/auth/forgot_password/email_verification_screen.dart';
 import 'package:spacehub/view/screens/auth/signup_screen.dart';
-import 'package:spacehub/view/screens/widgets/top_right_toast.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
 
-import '../widgets/login_other_options_container.dart';
+import '../../widgets/login_other_options_container.dart';
+import '../../widgets/top_right_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

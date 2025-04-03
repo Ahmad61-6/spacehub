@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:spacehub/view/screens/widgets/common_auth_app_bar.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 
 import '../../../../core/validators/email_validator.dart';
+import '../../../widgets/common_auth_app_bar.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});

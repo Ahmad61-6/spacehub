@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utility/app_colors.dart';
+import '../utility/app_colors.dart';
 
 class OtherLoginOption extends StatelessWidget {
   final String imagePath;
