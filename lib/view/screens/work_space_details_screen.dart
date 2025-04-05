@@ -71,7 +71,9 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
                             viewportFraction: 1,
                             onPageChanged: (index, reason) {
                               _currentIndex.value = index;
-                            }),
+                            },
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 1)),
                         items: imageList.map((item) {
                           return Builder(
                             builder: (BuildContext context) {
@@ -79,10 +81,10 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
                                 width: MediaQuery.of(context).size.width,
                                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(14),
                                     child: Image.asset(item['image_path'])),
                               );
                             },
