@@ -12,6 +12,7 @@
 Icon?
 **/Pods/
 **/.symlinks/
+**/AppDelegate.swift
 profile
 xcuserdata
 **/.generated/
