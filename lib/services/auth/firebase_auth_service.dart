@@ -1,49 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:spacehub/services/auth/auth_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
-class FirebaseAuthService extends AuthService {
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+class FirebaseService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  @override
-  Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
-
-  @override
-  Future<UserCredential> createAccount(
-      {required name, required email, required password}) async {
-    return await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-  }
-
-  @override
-  Future<void> deleteAccount(
-      {required String email, required String password}) async {}
-
-  @override
-  Future<void> resetPassword({required email}) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UserCredential> signIn(
-      {required String email, required String password}) {
-    // TODO: implement signIn
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateUserName({required String userName}) {
-    // TODO: implement updateUserName
-    throw UnimplementedError();
-  }
-
-  @override
-  // TODO: implement currentUser
-  User? get currentUser => firebaseAuth.currentUser;
+  FirebaseAuth get auth => _auth;
+  FirebaseFirestore get firestore => _firestore;
+  FirebaseStorage get storage => _storage;
 }

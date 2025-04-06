@@ -66,14 +66,14 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
                     children: [
                       CarouselSlider(
                         options: CarouselOptions(
-                            height: 220.0,
-                            enableInfiniteScroll: true,
-                            viewportFraction: 1,
-                            onPageChanged: (index, reason) {
-                              _currentIndex.value = index;
-                            },
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 1)),
+                          height: 220.0,
+                          enableInfiniteScroll: true,
+                          viewportFraction: 1,
+                          onPageChanged: (index, reason) {
+                            _currentIndex.value = index;
+                          },
+                          autoPlay: true,
+                        ),
                         items: imageList.map((item) {
                           return Builder(
                             builder: (BuildContext context) {

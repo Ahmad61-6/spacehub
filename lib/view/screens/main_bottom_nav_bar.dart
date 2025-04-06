@@ -16,10 +16,10 @@ class MainBottomNavBar extends StatefulWidget {
 }
 
 class _MainBottomNavBarState extends State<MainBottomNavBar> {
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    SearchScreen(),
-    MapScreen(),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const MapScreen(),
+    const SearchScreen(),
     ProfileScreen()
   ];
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
+import 'package:spacehub/controllers/auth/auth_controller.dart';
 import 'package:spacehub/controllers/auth/terms_controller.dart';
 import 'package:spacehub/core/validators/name_validator.dart';
 import 'package:spacehub/view/screens/auth/login_screen.dart';
@@ -10,7 +11,6 @@ import '../../../core/validators/password_validator.dart';
 import '../../utility/app_colors.dart';
 import '../../widgets/common_auth_app_bar.dart';
 import '../../widgets/login_other_options_container.dart';
-import '../../widgets/top_right_toast.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -26,6 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _confirmPasswordTEController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,24 +142,33 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                TopRightToast.show(
-                                    context: context,
-                                    message: 'Account Created Successfully',
-                                    color: Colors.green);
-                              }
-                            },
-                            child: const Text(
-                              'Sign UP',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                        GetBuilder<AuthController>(builder: (controller) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Visibility(
+                              visible: !controller.isLoading,
+                              replacement: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    await controller.signUpWithEmail(
+                                        _emailTEController.text.trim(),
+                                        _passwordTEController.text.trim(),
+                                        _nameTEController.text.trim());
+                                  }
+                                },
+                                child: const Text(
+                                  'Sign UP',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                         const SizedBox(
                           height: 20,
                         ),
@@ -174,8 +184,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            OtherLoginOption(
-                              imagePath: AssetsPath.googleLogo,
+                            GestureDetector(
+                              onTap: () {
+                                _authController.signInWithGoogle();
+                              },
+                              child: OtherLoginOption(
+                                imagePath: AssetsPath.googleLogo,
+                              ),
                             ),
                             const SizedBox(width: 20),
                             OtherLoginOption(

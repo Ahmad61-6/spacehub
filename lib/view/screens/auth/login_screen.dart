@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
+import 'package:spacehub/controllers/auth/auth_controller.dart';
 import 'package:spacehub/controllers/auth/password_visibility_controller.dart';
 import 'package:spacehub/core/validators/email_validator.dart';
 import 'package:spacehub/core/validators/password_validator.dart';
@@ -7,9 +8,10 @@ import 'package:spacehub/view/screens/auth/forgot_password/email_verification_sc
 import 'package:spacehub/view/screens/auth/signup_screen.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
+import 'package:spacehub/view/widgets/top_right_toast.dart';
 
+import '../../../services/connectivity_services.dart';
 import '../../widgets/login_other_options_container.dart';
-import '../../widgets/top_right_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ConnectivityService _connectivityService = ConnectivityService();
+  final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,30 +130,54 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
 
                 // Login Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        TopRightToast.show(
-                            context: context,
-                            message: 'Login successful',
-                            color: Colors.green);
-                      }
-                    },
-                    child: const Text(
-                      'Log In',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                GetBuilder<AuthController>(builder: (controller) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Visibility(
+                      visible: !controller.isLoading,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            bool isConnected =
+                                await _connectivityService.isConnected();
+                            if (!isConnected) {
+                              if (mounted) {
+                                TopRightToast.show(
+                                  context: context,
+                                  color: Colors.redAccent,
+                                  message: 'No internet connection',
+                                );
+                              }
+                            }
+                            await controller.signInWithEmail(
+                              _emailTEController.text.trim(),
+                              _passwordTEController.text.trim(),
+                            );
+                          }
+                        },
+                        child: const Text(
+                          'Log In',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    OtherLoginOption(
-                      imagePath: AssetsPath.googleLogo,
+                    GestureDetector(
+                      onTap: () {
+                        authController.signInWithGoogle();
+                      },
+                      child: OtherLoginOption(
+                        imagePath: AssetsPath.googleLogo,
+                      ),
                     ),
                     const SizedBox(width: 20),
                     OtherLoginOption(

@@ -14,11 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    Get.find<CategoryController>().selectCategory('Private');
-    super.initState();
-  }
+  final categoryController = Get.find<CategoryController>();
 
   @override
   Widget build(BuildContext context) {
