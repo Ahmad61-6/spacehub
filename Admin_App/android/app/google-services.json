@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "748280935846",
+    "project_id": "spacehub-4da14",
+    "storage_bucket": "spacehub-4da14.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748280935846:android:6f3fd9a2c8705441108b67",
+        "android_client_info": {
+          "package_name": "com.ahmad616.admin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748280935846-4tvg6hqllhg60pda7ifkh2dr16t0bji9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-Y_cC4tWuJBt-kkjjK4API1jhNHH28cI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748280935846-4tvg6hqllhg60pda7ifkh2dr16t0bji9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "748280935846-3j0l8ini1jo0u57u6r5if9mqmhvi6m73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spacehub"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748280935846:android:353fbcb143dc500e108b67",
+        "android_client_info": {
+          "package_name": "com.example.spacehub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748280935846-43t0cij5lkla49uulub5lqs7e4hil1e0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spacehub",
+            "certificate_hash": "2cfb75d4c460a8996403433c9e99e7bad2ce4237"
+          }
+        },
+        {
+          "client_id": "748280935846-4tvg6hqllhg60pda7ifkh2dr16t0bji9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-Y_cC4tWuJBt-kkjjK4API1jhNHH28cI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748280935846-4tvg6hqllhg60pda7ifkh2dr16t0bji9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "748280935846-3j0l8ini1jo0u57u6r5if9mqmhvi6m73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spacehub"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
