@@ -90,4 +90,12 @@ class AuthRepository {
   User? getCurrentUser() {
     return _firebaseService.auth.currentUser;
   }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseService.auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

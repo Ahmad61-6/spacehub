@@ -7,6 +7,7 @@ import 'package:spacehub/view/screens/main_bottom_nav_bar.dart';
 import '../../core/models/user_model.dart';
 import '../../core/repositories/auth_repository.dart';
 import '../../core/repositories/user_repository.dart';
+import '../../view/screens/auth/forgot_password/password_recovery_confirmation_screen.dart';
 import '../../view/screens/auth/login_screen.dart';
 
 class AuthController extends GetxController {
@@ -179,6 +180,29 @@ class AuthController extends GetxController {
     } finally {
       isLoading = false;
       update();
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      setLoading(true);
+      await _authRepository.sendPasswordResetEmail(email);
+      Get.off(() => PasswordRecoveryConfirmationScreen(
+          email: email)); // Replace current screen
+      // Get.snackbar(
+      //   'Success',
+      //   'Password reset email sent to $email',
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.green,
+      //   colorText: Colors.white,
+      //   duration: const Duration(seconds: 4), // Show for 4 seconds
+      // );
+    } on FirebaseAuthException catch (e) {
+      _showErrorSnackbar(_getErrorMessage(e));
+    } catch (e) {
+      _showErrorSnackbar('Failed to send reset email. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 

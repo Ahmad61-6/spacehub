@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spacehub/controllers/auth/auth_controller.dart';
+import 'package:spacehub/view/screens/auth/forgot_password/password_recovery_confirmation_screen.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 
 import '../../../../core/validators/email_validator.dart';
@@ -54,16 +57,34 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "SEND",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              GetBuilder<AuthController>(builder: (controller) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: controller.isLoading
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              controller.sendPasswordResetEmail(
+                                  _emailTEController.text.trim());
+                              Get.to(() => PasswordRecoveryConfirmationScreen(
+                                  email: _emailTEController.text.trim()));
+                            }
+                          },
+                    child: controller.isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            'Send Reset Link',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
-                ),
-              )
+                );
+              })
             ],
           ),
         ),

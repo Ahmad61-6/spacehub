@@ -3,6 +3,7 @@ class AssetsPath {
   static const String appLogo = 'assets/icons/app_logo.png';
   static const String googleLogo = 'assets/icons/google.png';
   static const String facebookLogo = 'assets/icons/facebook.png';
+  static const String emailSentIcon = 'assets/icons/email_sent_icon.png';
   static const String xLogo = 'assets/icons/x_logo.jpg';
   static const String workSpace = 'assets/images/work_space.jpg';
   static const String searchbarIcon = 'assets/icons/search_bar_icon.png';

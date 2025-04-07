@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spacehub/controllers/auth/auth_controller.dart';
 import 'package:spacehub/controllers/category_controller.dart';
+import 'package:spacehub/controllers/main_bottom_nav_bar_controller.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
 
 import '../../utility/app_colors.dart';
@@ -122,11 +124,23 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: CircleAvatar(
-            child: Icon(
-              Icons.person_outline,
-              color: AppColors.buttonColor,
-            ),
+          child: GestureDetector(
+            onTap: () {
+              Get.find<MainBottomNavBarController>().goToProfile();
+            },
+            child: GetBuilder<AuthController>(builder: (controller) {
+              return CircleAvatar(
+                radius: 25,
+                child: controller.user?.profilePhoto != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.network(controller.user!.profilePhoto!))
+                    : Icon(
+                        Icons.person_outline,
+                        color: AppColors.buttonColor,
+                      ),
+              );
+            }),
           ),
         )
       ],
@@ -140,7 +154,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   GestureDetector _homeScreenSearchBar() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.find<MainBottomNavBarController>().goToSearch();
+      },
       child: Container(
         padding: const EdgeInsets.all(8),
         height: 45,
