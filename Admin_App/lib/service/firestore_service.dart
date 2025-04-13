@@ -5,7 +5,6 @@ import '../models/work_space_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Workspace CRUD Operations
   Future<String> addWorkspace(Workspace workspace) async {
     final docRef = await _firestore
         .collection('workspaces')

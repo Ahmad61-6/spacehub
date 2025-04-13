@@ -10,7 +10,7 @@ class Workspace {
   final String locationName;
   final List<String> facilities;
   final double price;
-  final String? imageUrl;
+  final List<String> imageUrls;
   final String? description;
   final DateTime createdAt;
 
@@ -24,7 +24,7 @@ class Workspace {
     required this.locationName,
     required this.facilities,
     required this.price,
-    this.imageUrl,
+    required this.imageUrls,
     this.description,
     required this.createdAt,
   });
@@ -37,11 +37,11 @@ class Workspace {
       category: data['category'] ?? 'private',
       rating: (data['rating'] ?? 0.0).toDouble(),
       reviews: (data['reviews'] ?? 0).toInt(),
-      location: data['location'] ?? GeoPoint(0, 0),
+      location: data['location'] ?? const GeoPoint(0, 0),
       locationName: data['locationName'] ?? '',
       facilities: List<String>.from(data['facilities'] ?? []),
       price: (data['price'] ?? 0.0).toDouble(),
-      imageUrl: data['imageUrl'],
+      imageUrls: List<String>.from(data['imageUrls'] ?? []),
       description: data['description'],
       createdAt: (data['createdAt'] as Timestamp).toDate(),
     );
@@ -57,24 +57,24 @@ class Workspace {
       'locationName': locationName,
       'facilities': facilities,
       'price': price,
-      if (imageUrl != null) 'imageUrl': imageUrl,
+      'imageUrls': imageUrls,
       if (description != null) 'description': description,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
 
-  /// ✅ `copyWith` method
   Workspace copyWith({
     String? id,
     String? name,
     String? category,
+    String? primaryImage,
     double? rating,
     int? reviews,
     GeoPoint? location,
     String? locationName,
     List<String>? facilities,
     double? price,
-    String? imageUrl,
+    List<String>? imageUrls,
     String? description,
     DateTime? createdAt,
   }) {
@@ -88,7 +88,7 @@ class Workspace {
       locationName: locationName ?? this.locationName,
       facilities: facilities ?? this.facilities,
       price: price ?? this.price,
-      imageUrl: imageUrl ?? this.imageUrl,
+      imageUrls: imageUrls ?? this.imageUrls,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
     );

@@ -1,3 +1,4 @@
+import 'package:admin_app/controllers/network_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,10 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      _controller.login(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      if (Get.find<NetworkController>().isConnected) {
+        _controller.login(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+      }
     }
   }
 

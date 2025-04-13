@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../models/work_space_model.dart';
 import 'add_workspace_screen.dart';
@@ -40,13 +42,13 @@ class WorkspaceListScreen extends StatelessWidget {
         child: Column(
           children: [
             AppBar(
-              title: const Text('Manage Workspaces'),
+              title: const Text('WorkSpace List'),
               centerTitle: true,
               elevation: 0,
               backgroundColor: Colors.transparent,
               actions: [
                 IconButton(
-                  icon: Icon(Icons.add, size: 28),
+                  icon: const Icon(Iconsax.add, size: 28),
                   onPressed: () => Get.to(() => AddWorkspaceScreen()),
                   tooltip: 'Add New Workspace',
                 ),
@@ -79,7 +81,7 @@ class WorkspaceListScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.work_outline,
+                              Iconsax.book,
                               size: 64,
                               color: theme.colorScheme.primary.withOpacity(0.5),
                             ),
@@ -106,79 +108,153 @@ class WorkspaceListScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final doc = snapshot.data!.docs[index];
                         final workspace = Workspace.fromFirestore(doc);
+                        final hasImage = workspace.imageUrls.isNotEmpty;
 
-                        return Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                        return Dismissible(
+                          key: Key(doc.id),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade400,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Icon(Iconsax.trash, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          color: cardColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: theme.colorScheme.primary.withOpacity(
-                                    0.1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  _getCategoryIcon(workspace.category),
-                                  color: theme.colorScheme.primary,
-                                ),
-                              ),
-                              title: Text(
-                                workspace.name,
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    workspace.category,
-                                    style: theme.textTheme.bodySmall,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '\$${workspace.price.toStringAsFixed(2)}',
-                                    style: theme.textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: theme.colorScheme.primary,
+                          confirmDismiss: (direction) async {
+                            return await _confirmDelete(doc.id, context);
+                          },
+                          child: Card(
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            color: cardColor,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap:
+                                  () => Get.to(
+                                    () => EditWorkspaceScreen(
+                                      workspace: workspace,
                                     ),
                                   ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue.shade600,
-                                    ),
-                                    onPressed:
-                                        () => Get.to(
-                                          () => EditWorkspaceScreen(
-                                            workspace: workspace,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: [
+                                    // Image container
+                                    if (hasImage)
+                                      Container(
+                                        width: 80,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          image: DecorationImage(
+                                            image: CachedNetworkImageProvider(
+                                              workspace.imageUrls!.first,
+                                            ),
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red.shade600,
+                                      )
+                                    else
+                                      Container(
+                                        width: 80,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.primary
+                                              .withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          _getCategoryIcon(workspace.category),
+                                          color: theme.colorScheme.primary,
+                                        ),
+                                      ),
+                                    const SizedBox(width: 12),
+                                    // Workspace details
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            workspace.name,
+                                            style: theme.textTheme.titleMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            workspace.category,
+                                            style: theme.textTheme.bodySmall,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '\$${workspace.price.toStringAsFixed(2)}',
+                                            style: theme.textTheme.bodyLarge
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      theme.colorScheme.primary,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    onPressed:
-                                        () => _confirmDelete(doc.id, context),
-                                  ),
-                                ],
+                                    // Action buttons
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Iconsax.edit_2,
+                                            color: Colors.blue.shade600,
+                                          ),
+                                          onPressed:
+                                              () => Get.to(
+                                                () => EditWorkspaceScreen(
+                                                  workspace: workspace,
+                                                ),
+                                              ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Iconsax.trash,
+                                            color: Colors.red.shade600,
+                                          ),
+                                          onPressed:
+                                              () => _confirmDelete(
+                                                doc.id,
+                                                context,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -194,7 +270,7 @@ class WorkspaceListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.colorScheme.primary,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Iconsax.add, color: Colors.white),
         onPressed: () => Get.to(() => AddWorkspaceScreen()),
       ),
     );
@@ -203,20 +279,18 @@ class WorkspaceListScreen extends StatelessWidget {
   IconData _getCategoryIcon(String category) {
     switch (category.toLowerCase()) {
       case 'office':
-        return Icons.work_outline;
-      case 'meeting':
-        return Icons.meeting_room;
-      case 'creative':
-        return Icons.color_lens;
+        return Iconsax.building_3;
+      case 'space':
+        return Iconsax.convert_3d_cube;
       case 'private':
-        return Icons.lock_outline;
+        return Iconsax.security_safe;
       default:
-        return Icons.workspaces_outline;
+        return Iconsax.book;
     }
   }
 
-  Future<void> _confirmDelete(String id, BuildContext context) async {
-    return showDialog(
+  Future<bool> _confirmDelete(String id, BuildContext context) async {
+    final confirmed = await showDialog<bool>(
       context: context,
       builder:
           (context) => AlertDialog(
@@ -226,13 +300,12 @@ class WorkspaceListScreen extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context, false),
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  await _deleteWorkspace(id);
+                onPressed: () {
+                  Navigator.pop(context, true);
                 },
                 child: const Text(
                   'Delete',
@@ -242,6 +315,12 @@ class WorkspaceListScreen extends StatelessWidget {
             ],
           ),
     );
+
+    if (confirmed == true) {
+      await _deleteWorkspace(id);
+      return true;
+    }
+    return false;
   }
 
   Future<void> _deleteWorkspace(String id) async {
@@ -253,14 +332,16 @@ class WorkspaceListScreen extends StatelessWidget {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
         colorText: Colors.white,
+        duration: const Duration(seconds: 2),
       );
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Failed to delete workspace',
+        'Failed to delete workspace: $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
+        duration: const Duration(seconds: 3),
       );
     }
   }
