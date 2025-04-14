@@ -3,7 +3,20 @@ import 'package:flutter/material.dart';
 import '../utility/app_colors.dart';
 
 class DateAndTimeCard extends StatelessWidget {
-  const DateAndTimeCard({super.key});
+  // final String fromDate;
+  // final String toDate;
+  // final String fromTime;
+  // final String toTime;
+  // final String duration;
+
+  const DateAndTimeCard({
+    super.key,
+    // required this.fromDate,
+    // required this.toDate,
+    // required this.fromTime,
+    // required this.toTime,
+    // required this.duration,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +35,13 @@ class DateAndTimeCard extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 15, top: 15, right: 15),
+                  padding: EdgeInsets.all(20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("from"),
+                      Text("From"),
                       Container(width: 50, height: 1.5, color: Colors.white),
-                      SizedBox(
-                        width: 100,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            label: Text(
-                              "To",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            fillColor:
-                                AppColors.buttonColor.withValues(alpha: 0.09),
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                          ),
-                        ),
-                      ),
+                      Text("To"),
                     ],
                   ),
                 ),

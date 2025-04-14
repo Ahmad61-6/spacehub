@@ -1,22 +1,47 @@
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
+
+import '../core/models/work_space_model.dart';
+import '../services/work_space_service.dart';
 
 class CategoryController extends GetxController {
-  late String _selectedCategory = 'Private';
-  final List<String> _currentItems = [];
+  late String _selectedCategory = 'private';
+  List<Workspace> _workspaces = [];
+  bool _isLoading = false;
+  String? _error;
 
   String get selectedCategory => _selectedCategory;
+  List<Workspace> get workspaces => _workspaces;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
 
-  List<String> get currentItems => _currentItems;
+  final WorkspaceService _workspaceService = WorkspaceService();
 
-  final Map<String, List<String>> _categoryItems = {
-    'Private': ['Bedroom', 'Bathroom', 'Living Room'],
-    'Office': ['Desk', 'Chair', 'Meeting Room'],
-    'Space': ['Garden', 'Balcony', 'Terrace'],
-  };
-  void selectCategory(String category) {
-    _selectedCategory = category;
-    _currentItems.clear();
-    _currentItems.addAll(_categoryItems[category]!);
-    update();
+  @override
+  void onInit() {
+    super.onInit();
+    loadWorkspaces(_selectedCategory);
+  }
+
+  Future<void> loadWorkspaces(String category) async {
+    try {
+      _isLoading = true;
+      _error = null;
+      update();
+
+      _workspaces = await _workspaceService.getWorkspacesByCategory(category);
+      _selectedCategory = category;
+
+      print('Workspaces loaded successfully for category: $category');
+    } catch (e) {
+      _error = 'Failed to load workspaces';
+      print('Error loading workspaces: $e');
+    } finally {
+      _isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> refreshWorkspaces() async {
+    await loadWorkspaces(_selectedCategory);
   }
 }

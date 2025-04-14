@@ -18,7 +18,7 @@ class PlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.buttonColor.withValues(alpha: 0.1),
+      color: AppColors.buttonColor.withAlpha(25),
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -29,26 +29,31 @@ class PlaceCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(imageUrl,
-                  width: 80, height: 80, fit: BoxFit.cover),
+              child: imageUrl.startsWith('http')
+                  ? Image.network(imageUrl,
+                      width: 80, height: 80, fit: BoxFit.cover)
+                  : Image.asset(imageUrl,
+                      width: 80, height: 80, fit: BoxFit.cover),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 5),
                   Row(
                     children: [
-                      Icon(Icons.star, size: 16, color: Colors.amber),
-                      SizedBox(width: 5),
+                      const Icon(Icons.star, size: 16, color: Colors.amber),
+                      const SizedBox(width: 5),
                       Text(
                         "($rating)",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -57,7 +62,7 @@ class PlaceCard extends StatelessWidget {
                     children: [
                       Icon(Icons.location_on_outlined,
                           size: 16, color: AppColors.iconsCommonColor),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Text(
                         "$distance Miles",
                         style: TextStyle(

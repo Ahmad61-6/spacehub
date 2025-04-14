@@ -38,13 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 60),
                 // Title
                 Center(
                   child: Column(
                     children: [
                       Image.asset(AssetsPath.appLogo),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       Text(
                         'Sign in to your account',
                         style: TextStyle(
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
 
                 // Email Section
                 const Text(

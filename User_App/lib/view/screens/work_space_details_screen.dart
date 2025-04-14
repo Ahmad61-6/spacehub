@@ -1,32 +1,24 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacehub/view/screens/set_date_and_time_screen.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
+import 'package:spacehub/view/utility/assets_path.dart';
+import 'package:spacehub/view/widgets/details_screen_carousel.dart';
+import 'package:spacehub/view/widgets/place_card.dart';
 
-import '../utility/assets_path.dart';
-import '../widgets/place_card.dart';
+import '../../core/models/work_space_model.dart';
 
 class WorkSpaceDetailsScreen extends StatefulWidget {
-  const WorkSpaceDetailsScreen({super.key});
+  final Workspace workspace;
+
+  const WorkSpaceDetailsScreen({super.key, required this.workspace});
 
   @override
   State<WorkSpaceDetailsScreen> createState() => _WorkSpaceDetailsScreenState();
 }
 
 class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
-  List imageList = [
-    {'id': 1, 'image_path': AssetsPath.workSpace},
-    {'id': 2, 'image_path': AssetsPath.workSpace},
-    {'id': 3, 'image_path': AssetsPath.workSpace}
-  ];
-
-  final ValueNotifier<int> _currentIndex = ValueNotifier(0);
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +26,7 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.appBackground,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Detail",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -48,235 +40,121 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              height: 320,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: AppColors.buttonColor.withValues(alpha: 0.15),
+      body: SingleChildScrollView(
+        // <-- Wrap the entire content with this
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DetailsScreenCarousel(
+                currentIndex: _currentIndex,
+                imageUrls: widget.workspace.imageUrls,
+                name: widget.workspace.name,
+                rating: widget.workspace.rating,
+                location: widget.workspace.locationName,
+                price: widget.workspace.price,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
               ),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          height: 220.0,
-                          enableInfiniteScroll: true,
-                          viewportFraction: 1,
-                          onPageChanged: (index, reason) {
-                            _currentIndex.value = index;
-                          },
-                          autoPlay: true,
-                        ),
-                        items: imageList.map((item) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(14),
-                                    child: Image.asset(item['image_path'])),
-                              );
-                            },
-                          );
-                        }).toList(),
+              const SizedBox(height: 30),
+              const Text("Facilities",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              // Display facilities from workspace
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: widget.workspace.facilities.map((facility) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.buttonColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      facility,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF1A1446),
+                        fontWeight: FontWeight.w500,
                       ),
-                      Positioned(
-                        bottom: 10,
-                        right: 0,
-                        left: 0,
-                        child: ValueListenableBuilder(
-                            valueListenable: _currentIndex,
-                            builder: (context, index, _) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children:
-                                    List.generate(imageList.length, (index) {
-                                  bool isActive = index == _currentIndex.value;
-                                  return AnimatedContainer(
-                                    height: 10,
-                                    width: isActive ? 55 : 10,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: isActive ? 6 : 3),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40),
-                                      color: isActive
-                                          ? AppColors.buttonColor
-                                          : Colors.white,
-                                    ),
-                                    duration: Duration(milliseconds: 300),
-                                  );
-                                }),
-                              );
-                            }),
-                      )
+                    ),
+                  );
+                }).toList(),
+              ),
+
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text('Review',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color:
+                                  AppColors.iconsCommonColor.withOpacity(0.9))),
+                      const SizedBox(width: 25),
+                      Text('Contact',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color:
+                                  AppColors.iconsCommonColor.withOpacity(0.9))),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Work Hive BD",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            Text("(4.5)"),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 4.0, right: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.location_on_outlined,
-                                  color: AppColors.iconsCommonColor),
-                              const SizedBox(width: 3),
-                              Text(
-                                "Uttara Sector 7, Dhaka",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.iconsCommonColor
-                                        .withValues(alpha: 0.8)),
-                              ),
-                            ],
-                          ),
-                          Text("BDT 799/hour", style: TextStyle(fontSize: 18))
-                        ],
-                      ))
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            Text("Facilities",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: ['Private', 'Office', 'Space']
-                  .map(
-                    (category) => Expanded(
-                      // Use Expanded instead of infinite width
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 6), // Add some spacing
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12, // Reduced padding for better fit
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.buttonColor
-                                .withValues(alpha: 0.15), // Fixed opacity
-                          ),
-                          child: Text(
-                            category, // Use the actual category variable
-                            textAlign: TextAlign.center, // Center the text
-                            style: TextStyle(
-                                color: AppColors.constTextColor, fontSize: 16),
-                          ),
-                        ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => SetDateAndTimeScreen());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.buttonColor,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text('Review',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: AppColors.iconsCommonColor
-                                .withValues(alpha: 0.9))),
-                    const SizedBox(width: 25),
-                    Text('Contact',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: AppColors.iconsCommonColor
-                                .withValues(alpha: 0.9))),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => const SetDateAndTimeScreen());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        AppColors.buttonColor, // Button color// Text color
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                    child: const Text(
+                      'Book Now',
+                      style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  child: Text(
-                    'Book Now',
-                    style: TextStyle(fontSize: 16),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Explore Near',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Explore Near',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'See All',
-                  style: TextStyle(color: AppColors.buttonColor),
-                )
-              ],
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return const PlaceCard(
-                      imageUrl: AssetsPath.workSpace,
-                      title: "ANZ Square Dhanmondi",
-                      rating: 4.5,
-                      distance: '2.0',
-                    );
-                  }),
-            )
-          ],
+                  Text(
+                    'See All',
+                    style: TextStyle(color: AppColors.buttonColor),
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Nearby places list - no need for Expanded or fixed height now
+              Column(
+                children: List.generate(3, (index) {
+                  return const PlaceCard(
+                    imageUrl: AssetsPath.workSpace,
+                    title: "ANZ Square Dhanmondi",
+                    rating: 4.5,
+                    distance: '2.0',
+                  );
+                }),
+              ),
+              const SizedBox(height: 20), // Add some bottom padding
+            ],
+          ),
         ),
       ),
     );

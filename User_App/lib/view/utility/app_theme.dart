@@ -37,5 +37,12 @@ class AppTheme {
       hintStyle: TextStyle(color: Colors.grey.shade400),
       contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
     ),
+    primaryColor: Colors.white,
+    canvasColor: Colors.white,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: AppColors.buttonColor,
+      unselectedItemColor: AppColors.iconsCommonColor,
+    ),
   );
 }

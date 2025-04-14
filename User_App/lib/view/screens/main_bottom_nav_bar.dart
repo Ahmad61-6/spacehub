@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:spacehub/controllers/main_bottom_nav_bar_controller.dart';
-import 'package:spacehub/view/utility/app_colors.dart';
 
 import 'main_bottom_nav_screens/home_screen.dart';
 import 'main_bottom_nav_screens/map_screen.dart';
@@ -27,27 +27,27 @@ class _MainBottomNavBarState extends State<MainBottomNavBar> {
     return GetBuilder<MainBottomNavBarController>(builder: (controller) {
       return Scaffold(
         body: _screens[controller.currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.currentIndex,
-          onTap: (index) => controller.changeIndex(index),
-          selectedItemColor: AppColors.buttonColor.withValues(alpha: 0.8),
-          unselectedItemColor: AppColors.iconsCommonColor,
-          showUnselectedLabels: true,
-          backgroundColor: Colors.white,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined, size: 30), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.location_on_outlined, size: 30), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.search_rounded, size: 30), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person_2_outlined,
-                  size: 30,
-                ),
-                label: '')
-          ],
+        bottomNavigationBar: SizedBox(
+          height: 88,
+          child: BottomNavigationBar(
+            currentIndex: controller.currentIndex,
+            onTap: (index) => controller.changeIndex(index),
+            showUnselectedLabels: true,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.home_2, size: 30), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.location4, size: 30), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.search_normal_1, size: 30), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Iconsax.profile_circle,
+                    size: 30,
+                  ),
+                  label: '')
+            ],
+          ),
         ),
       );
     });

@@ -1,84 +1,69 @@
+// card_information_controller.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CardInformationController extends GetxController {
-  var _fromDate = '';
-  var _toDate = '';
-  var _fromTime = '';
-  var _toTime = '';
-  Duration _duration = Duration.zero;
+  DateTime _fromDate = DateTime.now();
+  DateTime _toDate = DateTime.now().add(const Duration(days: 1));
+  TimeOfDay _fromTime = const TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay _toTime = const TimeOfDay(hour: 17, minute: 0);
 
-  String get fromDate => _fromDate;
+  Duration _duration = const Duration(hours: 8);
 
-  String get toDate => _toDate;
+  String get fromDate => DateFormat('dd MMM yyyy').format(_fromDate);
+  String get toDate => DateFormat('dd MMM yyyy').format(_toDate);
 
-  String get fromTime => _fromTime;
+  String get fromTime => _formatTimeOfDay(_fromTime);
+  String get toTime => _formatTimeOfDay(_toTime);
 
-  String get toTime => _toTime;
+  TimeOfDay get fromTimeRaw => _fromTime;
+  TimeOfDay get toTimeRaw => _toTime;
 
-  Duration get duration => _duration;
+  DateTime get fromDateRaw => _fromDate;
+  DateTime get toDateRaw => _toDate;
 
-  void setFromDate(String fromDate) {
-    _fromDate = fromDate;
+  String get formattedDuration {
+    final hours = _duration.inHours.toString().padLeft(2, '0');
+    final minutes = (_duration.inMinutes % 60).toString().padLeft(2, '0');
+    return "$hours.$minutes Hours";
+  }
+
+  void setFromDate(DateTime date) {
+    _fromDate = date;
+    _calculateDuration();
     update();
   }
 
-  void setToDate(String toDate) {
-    _toDate = toDate;
+  void setToDate(DateTime date) {
+    _toDate = date;
+    _calculateDuration();
     update();
   }
 
-  void setFromTime(String fromTime) {
-    _fromTime = fromTime;
+  void setFromTime(TimeOfDay time) {
+    _fromTime = time;
+    _calculateDuration();
     update();
   }
 
-  void setToTime(String toTime) {
-    _toTime = toTime;
+  void setToTime(TimeOfDay time) {
+    _toTime = time;
+    _calculateDuration();
     update();
   }
 
-  void setDuration(String fromTime, String toTime) {
-    // Convert time string to total minutes
-    int timeToMinutes(String time) {
-      List<String> parts = time.split(' ');
-      List<String> timeParts = parts[0].split(':');
+  void _calculateDuration() {
+    final fromDateTime = DateTime(_fromDate.year, _fromDate.month,
+        _fromDate.day, _fromTime.hour, _fromTime.minute);
+    final toDateTime = DateTime(
+        _toDate.year, _toDate.month, _toDate.day, _toTime.hour, _toTime.minute);
+    _duration = toDateTime.difference(fromDateTime);
+  }
 
-      int hours = int.parse(timeParts[0]);
-      int minutes = int.parse(timeParts[1]);
-      String period = parts[1].toUpperCase();
-
-      // Convert to 24-hour format
-      if (period == 'PM' && hours != 12) {
-        hours += 12;
-      } else if (period == 'AM' && hours == 12) {
-        hours = 0;
-      }
-
-      return hours * 60 + minutes;
-    }
-
-    // Calculate duration between two time strings
-    Duration calculateDuration(String from, String to) {
-      int fromMinutes = timeToMinutes(from);
-      int toMinutes = timeToMinutes(to);
-
-      if (toMinutes < fromMinutes) {
-        toMinutes += 1440; // Add 24 hours if toTime is next day
-      }
-
-      return Duration(minutes: toMinutes - fromMinutes);
-    }
-
-    // Format Duration object as "HH hours MM minutes"
-    String formatDuration(Duration duration) {
-      String hours = duration.inHours.toString().padLeft(2, '0');
-      String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-      return "$hours hours $minutes minutes";
-    }
-
-    // Execute logic
-    _duration = calculateDuration(fromTime, toTime);
-    update();
-    print(formatDuration(_duration));
+  String _formatTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return DateFormat('hh:mm a').format(dt);
   }
 }

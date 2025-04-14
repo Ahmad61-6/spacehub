@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spacehub/controllers/map_controller.dart';
 
 import '../../controllers/auth/auth_controller.dart';
 import 'auth/login_screen.dart';
@@ -19,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<MapController>().fetchLocation();
     _initializeApp();
   }
 

@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:spacehub/controllers/auth/auth_controller.dart';
 import 'package:spacehub/controllers/category_controller.dart';
 import 'package:spacehub/controllers/main_bottom_nav_bar_controller.dart';
+import 'package:spacehub/view/utility/app_colors.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
+import 'package:spacehub/view/widgets/work_space/work_space_item.dart';
 
-import '../../utility/app_colors.dart';
-import '../../widgets/work_space/work_space_item.dart';
+import '../../all_work_spaces_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,13 +17,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final categoryController = Get.find<CategoryController>();
+  final CategoryController categoryController = Get.find<CategoryController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Load initial data when screen first loads
+    categoryController.loadWorkspaces(categoryController.selectedCategory);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _homeScreenAppBar(),
-      backgroundColor: AppColors.appBackground,
+      backgroundColor: AppColors.screenBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -44,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (controller) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: ['Private', 'Office', 'Space']
+                        children: ['private', 'office', 'space']
                             .map(
                               (category) => GestureDetector(
                                 onTap: () =>
-                                    controller.selectCategory(category),
+                                    controller.loadWorkspaces(category),
                                 child: Container(
                                   width: 105,
                                   padding: const EdgeInsets.symmetric(
@@ -88,9 +96,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        'see all',
-                        style: TextStyle(color: AppColors.buttonColor),
+                      TextButton(
+                        onPressed: () {
+                          // Navigate to the new AllWorkspacesScreen
+                          Get.to(() => const AllWorkspacesScreen());
+                        },
+                        child: Text(
+                          'see all',
+                          style: TextStyle(color: AppColors.buttonColor),
+                        ),
                       )
                     ],
                   ),
@@ -99,14 +113,94 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             // Expanded ListView that takes remaining space
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemCount: 5, // Replace with your actual item count
-                itemBuilder: (context, index) {
-                  return WorkSpaceItem();
-                },
-              ),
+            GetBuilder<CategoryController>(
+              builder: (controller) {
+                if (controller.isLoading) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.buttonColor,
+                      ),
+                    ),
+                  );
+                }
+
+                if (controller.error != null) {
+                  return Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            controller.error!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () => controller.refreshWorkspaces(),
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                if (controller.workspaces.isEmpty) {
+                  return Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.work_outline,
+                            size: 48,
+                            color: AppColors.iconsCommonColor,
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'No workspaces found',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Try another category',
+                            style: TextStyle(
+                              color:
+                                  AppColors.iconsCommonColor.withOpacity(0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                return Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () => controller.refreshWorkspaces(),
+                    color: AppColors.buttonColor,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: controller.workspaces.length,
+                      itemBuilder: (context, index) {
+                        return WorkSpaceItem(
+                          workspace: controller.workspaces[index],
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -118,7 +212,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       backgroundColor: AppColors.appBackground,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          // Open sidebar/drawer
+          Scaffold.of(context).openDrawer();
+        },
         icon: Image.asset(AssetsPath.sidebarIcon),
       ),
       actions: [
@@ -131,10 +228,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: GetBuilder<AuthController>(builder: (controller) {
               return CircleAvatar(
                 radius: 25,
+                backgroundColor: AppColors.buttonColor.withOpacity(0.1),
                 child: controller.user?.profilePhoto != null
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image.network(controller.user!.profilePhoto!))
+                        child: Image.network(
+                          controller.user!.profilePhoto!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
                     : Icon(
                         Icons.person_outline,
                         color: AppColors.buttonColor,

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacehub/view/screens/work_space_details_screen.dart';
+import 'package:spacehub/view/utility/app_colors.dart';
 
-import '../../utility/app_colors.dart';
-import '../../utility/assets_path.dart';
+import '../../../core/models/work_space_model.dart';
 
 class WorkSpaceItem extends StatelessWidget {
+  final Workspace workspace;
+
   const WorkSpaceItem({
     super.key,
+    required this.workspace,
   });
 
   @override
@@ -22,20 +25,31 @@ class WorkSpaceItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              AssetsPath.workSpace,
-              width: double.infinity,
-              height: 200, // Set your desired height
-              fit: BoxFit.cover,
-            ),
+            child: workspace.imageUrls.isNotEmpty
+                ? Image.network(
+                    workspace.imageUrls.first,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error),
+                    ),
+                  )
+                : Container(
+                    height: 200,
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.image_not_supported),
+                  ),
           ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Dhaka Desk',
-                style: TextStyle(fontSize: 20),
+                workspace.name,
+                style: const TextStyle(fontSize: 20),
               ),
               Row(
                 children: [
@@ -45,11 +59,11 @@ class WorkSpaceItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '(4.5)12 Review',
+                    '(${workspace.rating}) ${workspace.reviews} Reviews',
                     style: TextStyle(
-                        color:
-                            AppColors.iconsCommonColor.withValues(alpha: 0.8),
-                        fontSize: 14),
+                      color: AppColors.iconsCommonColor.withOpacity(0.8),
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -64,24 +78,26 @@ class WorkSpaceItem extends StatelessWidget {
                       color: AppColors.iconsCommonColor),
                   const SizedBox(width: 4),
                   Text(
-                    "Uttara Sector 7, Dhaka",
+                    workspace.locationName,
                     style: TextStyle(
-                        fontSize: 14,
-                        color:
-                            AppColors.iconsCommonColor.withValues(alpha: 0.8)),
+                      fontSize: 14,
+                      color: AppColors.iconsCommonColor.withOpacity(0.8),
+                    ),
                   ),
                 ],
               ),
               Row(
                 children: [
                   TextButton(
-                      onPressed: () {
-                        Get.to(() => const WorkSpaceDetailsScreen());
-                      },
-                      child: Text(
-                        "Details",
-                        style: TextStyle(color: AppColors.buttonColor),
-                      ))
+                    onPressed: () {
+                      Get.to(
+                          () => WorkSpaceDetailsScreen(workspace: workspace));
+                    },
+                    child: Text(
+                      "Details",
+                      style: TextStyle(color: AppColors.buttonColor),
+                    ),
+                  )
                 ],
               )
             ],
