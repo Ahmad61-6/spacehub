@@ -174,7 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         Center(
                           child: Text(
-                            "Or sign up with",
+                            "or sign up with",
                             style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         ),
