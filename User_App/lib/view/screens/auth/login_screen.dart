@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 TopRightToast.show(
                                   context: context,
                                   color: Colors.redAccent,
-                                  message: 'No internet connection',
+                                  message: 'No internet connection..',
                                 );
                               }
                             }
