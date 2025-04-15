@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         controller.selectedCategory == category
                                             ? AppColors.buttonColor
                                             : AppColors.buttonColor
-                                                .withOpacity(0.2),
+                                                .withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
