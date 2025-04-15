@@ -20,12 +20,12 @@ class AdminController extends GetxController {
 
       // First validate email format
       if (!email.isEmail) {
-        throw 'Please enter a valid email address';
+        throw 'Please enter a valid email address!';
       }
 
       // Check password length
       if (password.length < 6) {
-        throw 'Password must be at least 6 characters';
+        throw 'Password must be at least 6 characters!';
       }
 
       final userCredential = await _auth.signInWithEmailAndPassword(
@@ -77,7 +77,7 @@ class AdminController extends GetxController {
       admin = null;
       Get.offAll(() => LoginScreen());
     } catch (e) {
-      Get.snackbar('Error', 'Logout failed: ${e.toString()}');
+      Get.snackbar('error', 'Logout failed: ${e.toString()}');
     } finally {
       isLoading = false;
       update(); // notify UI
