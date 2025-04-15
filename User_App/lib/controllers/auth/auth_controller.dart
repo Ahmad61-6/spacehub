@@ -55,6 +55,7 @@ class AuthController extends GetxController {
 
       await _userRepository.createUser(newUser);
       user = newUser;
+      print(user.toString());
       update();
       Get.offAll(() => MainBottomNavBar());
     } on FirebaseAuthException catch (e) {
