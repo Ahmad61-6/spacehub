@@ -28,7 +28,7 @@ class UserController extends GetxController {
       await fetchUserData(user!.email);
       update();
     } catch (e) {
-      print('Error in UserController.addBooking: $e');
+      print('error in UserController.addBooking: $e');
       rethrow;
     }
   }

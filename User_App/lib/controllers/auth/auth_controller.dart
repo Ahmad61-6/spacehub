@@ -197,14 +197,14 @@ class AuthController extends GetxController {
       await _authRepository.sendPasswordResetEmail(email);
       Get.off(() => PasswordRecoveryConfirmationScreen(
           email: email)); // Replace current screen
-      // Get.snackbar(
-      //   'Success',
-      //   'Password reset email sent to $email',
-      //   snackPosition: SnackPosition.BOTTOM,
-      //   backgroundColor: Colors.green,
-      //   colorText: Colors.white,
-      //   duration: const Duration(seconds: 4), // Show for 4 seconds
-      // );
+      Get.snackbar(
+        'Success',
+        'Password reset email sent to $email',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 1), // Show for 4 seconds
+      );
     } on FirebaseAuthException catch (e) {
       _showErrorSnackbar(_getErrorMessage(e));
     } catch (e) {
@@ -213,7 +213,4 @@ class AuthController extends GetxController {
       setLoading(false);
     }
   }
-
-  // Similarly update signInWithFacebook and signInWithTwitter methods
-  // ...
 }

@@ -50,39 +50,6 @@ class AuthRepository {
     }
   }
 
-  // Future<UserCredential> signInWithFacebook() async {
-  //   try {
-  //     final LoginResult loginResult = await FacebookAuth.instance.login();
-  //     final OAuthCredential facebookAuthCredential =
-  //     FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  //
-  //     return await _firebaseService.auth
-  //         .signInWithCredential(facebookAuthCredential);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
-  // Future<UserCredential> signInWithTwitter() async {
-  //   try {
-  //     final twitterLogin = TwitterLogin(
-  //       apiKey: 'your_twitter_api_key',
-  //       apiSecretKey: 'your_twitter_api_secret',
-  //       redirectURI: 'your_twitter_redirect_uri',
-  //     );
-  //
-  //     final authResult = await twitterLogin.login();
-  //     final credential = TwitterAuthProvider.credential(
-  //       accessToken: authResult.authToken!,
-  //       secret: authResult.authTokenSecret!,
-  //     );
-  //
-  //     return await _firebaseService.auth.signInWithCredential(credential);
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
   Future<void> signOut() async {
     await _firebaseService.auth.signOut();
   }
