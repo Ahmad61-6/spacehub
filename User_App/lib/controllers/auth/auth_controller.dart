@@ -29,7 +29,7 @@ class AuthController extends GetxController {
 
   void _showErrorSnackbar(String message) {
     Get.snackbar(
-      'Error',
+      'error',
       message,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.red,
@@ -60,7 +60,7 @@ class AuthController extends GetxController {
     } on FirebaseAuthException catch (e) {
       _showErrorSnackbar(_getErrorMessage(e));
     } catch (e) {
-      _showErrorSnackbar('An unexpected error occurred. Please try again.');
+      _showErrorSnackbar('An unexpected error occurred. Please try again..');
     } finally {
       setLoading(false);
     }
@@ -87,9 +87,9 @@ class AuthController extends GetxController {
   String _getErrorMessage(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
-        return 'The email address is badly formatted.';
+        return 'The email address is badly formatted!';
       case 'user-disabled':
-        return 'This user has been disabled.';
+        return 'This user has been disabled!';
       case 'user-not-found':
         return 'No user found with this email.';
       case 'wrong-password':
