@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:spacehub/view/screens/main_bottom_nav_bar.dart';
 
 class BookingSuccessScreen extends StatelessWidget {
   const BookingSuccessScreen({super.key});
@@ -54,7 +56,7 @@ class BookingSuccessScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       // Navigate back or to home
-                      Navigator.pop(context);
+                      Get.offAll(() => MainBottomNavBar());
                     },
                     child: const Text(
                       'RETURN TO HOME',

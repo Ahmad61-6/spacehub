@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spacehub/controllers/auth/auth_controller.dart';
 import 'package:spacehub/controllers/user_controller.dart';
 import 'package:spacehub/view/screens/booking_success_screen.dart';
 import 'package:spacehub/view/utility/assets_path.dart';
@@ -21,6 +22,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   String selectedMethod = "bKash";
   // final BookingController _bookingController = Get.find<BookingController>();
   final DateTimeController _dateTimeController = Get.find<DateTimeController>();
+  final AuthController _authController = Get.find<AuthController>();
   final UserController _userController = Get.find<UserController>();
 
   final List<Map<String, dynamic>> paymentMethods = [
@@ -45,7 +47,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       }
 
       // Get current user ID properly
-      final currentUser = _userController.user;
+      final currentUser = _authController.user;
       if (currentUser == null) {
         throw Exception('User not logged in');
       }
@@ -86,6 +88,13 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       );
       print('Booking error: $e');
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("User in Payment Screen: ${_userController.user?.email}");
   }
 
   @override

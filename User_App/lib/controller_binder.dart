@@ -28,6 +28,5 @@ class ControllerBinder extends Bindings {
     Get.put(SearchScreenController());
     Get.put(DateTimeController());
     Get.put(BookingController());
-    Get.put(UserController());
   }
 }

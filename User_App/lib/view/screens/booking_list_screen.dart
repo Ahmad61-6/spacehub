@@ -1,66 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../controllers/auth/auth_controller.dart';
+import '../../controllers/booking_controller.dart';
+import '../utility/app_colors.dart';
 
 class BookingListScreen extends StatelessWidget {
   const BookingListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('My Booking',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          centerTitle: true,
-          leading: const BackButton(),
-          actions: const [
-            Padding(padding: EdgeInsets.all(12), child: Icon(Icons.more_vert))
-          ],
-          bottom: const TabBar(
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.black,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            indicator: BoxDecoration(
-              color: Color(0xFF2F3C7E),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+    return GetBuilder<BookingController>(
+      init: BookingController()
+        ..fetchBookings(Get.find<AuthController>().user!.email),
+      builder: (controller) {
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.appBackground,
+              title: const Text(
+                'My Booking',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
+              leading: const BackButton(),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Icon(Icons.more_vert),
+                ),
+              ],
+              bottom: const TabBar(
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                indicator: UnderlineTabIndicator(
+                  borderSide:
+                      BorderSide(width: 3.0, color: AppColors.buttonColor),
+                  insets: EdgeInsets.symmetric(horizontal: 24.0),
+                ),
+                tabs: [
+                  Tab(text: 'Upcoming'),
+                  Tab(text: 'Completed'),
+                  Tab(text: 'Cancelled'),
+                ],
+              ),
             ),
-            tabs: [
-              Tab(text: 'Upcoming'),
-              Tab(text: 'Completed'),
-              Tab(text: 'Cancelled'),
-            ],
+            body: controller.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : TabBarView(
+                    children: [
+                      BookingListTab(status: 'confirmed'),
+                      BookingListTab(status: 'completed'),
+                      BookingListTab(status: 'cancelled'),
+                    ],
+                  ),
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            BookingListTab(),
-            Center(child: Text('No completed bookings')),
-            Center(child: Text('No cancelled bookings')),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
 class BookingListTab extends StatelessWidget {
-  const BookingListTab({super.key});
+  final String status;
+
+  const BookingListTab({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        BookingCard(
-          imageUrl:
-              'https://media.cntraveler.com/photos/5cb63f1961b80248e1e0d0de/4:3/w_1920,c_limit/Waldorf-Astoria-Jeddah-Qasr-Al-Sharq_2019_WAJQA_Gallery_King-Guest-Room-2.jpg',
-          hotelName: 'Waldorf Astoria',
-          location: 'Jeddah, Saudi Arabia',
-          rating: 5,
-          checkIn: '12 Mar 2025',
-          checkOut: '17 Mar 2025',
-        ),
-      ],
+    return GetBuilder<BookingController>(
+      builder: (controller) {
+        final filtered =
+            controller.bookings.where((b) => b['status'] == status).toList();
+
+        if (filtered.isEmpty) {
+          return Center(child: Text('No $status bookings'));
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: filtered.length,
+          itemBuilder: (context, index) {
+            final booking = filtered[index];
+
+            return BookingCard(
+              imageUrl: booking['imageUrl'] ?? '',
+              hotelName: booking['workspaceName'] ?? 'Workspace',
+              location: booking['locationName'] ?? 'Unknown',
+              rating: (booking['rating'] ?? 0).toDouble(),
+              checkIn:
+                  booking['bookingDate']?.toDate()?.toString().split(' ')[0] ??
+                      '',
+              checkOut: "${booking['fromTime']} - ${booking['toTime']}",
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -87,6 +124,7 @@ class BookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
+      color: AppColors.appBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 4,
       child: Padding(
@@ -144,8 +182,7 @@ class BookingCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    const Text('Check in',
-                        style: TextStyle(color: Colors.green)),
+                    const Text('Date', style: TextStyle(color: Colors.green)),
                     const SizedBox(height: 4),
                     Row(
                       children: [
@@ -158,12 +195,12 @@ class BookingCard extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    const Text('Check out',
+                    const Text('Time Slot',
                         style: TextStyle(color: Colors.red)),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today, size: 14),
+                        const Icon(Icons.access_time, size: 14),
                         const SizedBox(width: 4),
                         Text(checkOut, style: const TextStyle(fontSize: 13)),
                       ],

@@ -177,10 +177,10 @@ class _MapScreenState extends State<MapScreen> {
             children: [
               GoogleMap(
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                    controller.currentLocation!.latitude!,
-                    controller.currentLocation!.longitude!,
-                  ),
+                  target: LatLng(23.877444994260234, 90.32020211430178
+                      // controller.currentLocation!.latitude!,
+                      // controller.currentLocation!.longitude!,
+                      ),
                   zoom: 11,
                 ),
                 markers: _markers,

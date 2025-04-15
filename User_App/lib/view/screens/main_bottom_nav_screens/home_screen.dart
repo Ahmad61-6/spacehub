@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // Load initial data when screen first loads
-    categoryController.loadWorkspaces(categoryController.selectedCategory);
+    // categoryController.loadWorkspaces(categoryController.selectedCategory);
   }
 
   @override

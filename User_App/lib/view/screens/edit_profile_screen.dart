@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:spacehub/controllers/user_controller.dart';
 import 'package:spacehub/core/models/user_model.dart';
 
+import '../../controllers/auth/auth_controller.dart';
+
 class EditProfileScreen extends StatefulWidget {
   final UserModel user;
 
@@ -163,7 +165,12 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     );
 
     await _userController.updateProfile(updatedUser);
-    Get.back(); // Return to profile screen
+
+    // ✅ Update user in AuthController to reflect changes in ProfileScreen
+    final authController = Get.find<AuthController>();
+    authController.updateUser(updatedUser);
+
+    Get.back(); // Return to ProfileScreen
     Get.snackbar('Success', 'Profile updated successfully');
   }
 }

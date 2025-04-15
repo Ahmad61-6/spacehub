@@ -9,6 +9,7 @@ import '../../core/repositories/auth_repository.dart';
 import '../../core/repositories/user_repository.dart';
 import '../../view/screens/auth/forgot_password/password_recovery_confirmation_screen.dart';
 import '../../view/screens/auth/login_screen.dart';
+import '../user_controller.dart';
 
 class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
@@ -19,6 +20,11 @@ class AuthController extends GetxController {
   void setLoading(bool value) {
     isLoading = value;
     update();
+  }
+
+  void updateUser(UserModel updatedUser) {
+    user = updatedUser;
+    update(); // Notifies GetBuilder to rebuild widgets
   }
 
   void _showErrorSnackbar(String message) {
@@ -168,6 +174,8 @@ class AuthController extends GetxController {
       update();
 
       user = await _userRepository.getUser(email);
+      Get.find<UserController>().user = user;
+      Get.find<UserController>().update();
 
       // Save email to SharedPreferences
       final prefs = await SharedPreferences.getInstance();

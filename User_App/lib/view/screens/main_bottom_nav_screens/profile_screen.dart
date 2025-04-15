@@ -107,11 +107,7 @@ class ProfileScreen extends StatelessWidget {
                 Divider(
                   thickness: 1,
                 ),
-                GestureDetector(
-                    onTap: () {
-                      Get.to(() => BookingListScreen());
-                    },
-                    child: _buildListTile(Icons.card_giftcard, 'Bookings')),
+                _buildListTile(Icons.card_giftcard, 'Bookings'),
                 Divider(
                   thickness: 1,
                 ),
@@ -178,7 +174,11 @@ class ProfileScreen extends StatelessWidget {
       leading: Icon(icon, color: AppColors.buttonColor),
       title: Text(title),
       trailing: Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () {},
+      onTap: title == 'Bookings'
+          ? () {
+              Get.to(() => BookingListScreen());
+            }
+          : () {},
     );
   }
 }

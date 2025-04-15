@@ -4,10 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spacehub/core/models/work_space_model.dart';
 
+import '../core/repositories/user_repository.dart';
 import '../view/screens/booking_success_screen.dart';
 
 class BookingController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserRepository _userRepository = UserRepository();
+
+  bool isLoading = false;
+  List<Map<String, dynamic>> bookings = [];
+
+  Future<void> fetchBookings(String email) async {
+    try {
+      isLoading = true;
+      update();
+
+      final user = await _userRepository.getUser(email);
+      bookings = user?.bookings ?? [];
+    } catch (e) {
+      print("Error fetching bookings: $e");
+      bookings = [];
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
 
   Future<void> addUserBooking({
     required String userId,
