@@ -1,5 +1,10 @@
 class AssetsPath {
   static const String appLogoWelcome = 'assets/icons/app_logo_welcome.png';
+  static const String bkash = 'assets/payment/bkash.png';
+  static const String nagad = 'assets/payment/nagad.png';
+  static const String visa = 'assets/payment/visa.png';
+  static const String amrericanExpress = 'assets/payment/american_ex.png';
+  static const String masterCard = 'assets/payment/master.png';
   static const String appLogo = 'assets/app_logo.png';
   static const String googleLogo = 'assets/icons/google.png';
   static const String facebookLogo = 'assets/icons/facebook.png';

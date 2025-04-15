@@ -18,9 +18,18 @@ class UserController extends GetxController {
   }
 
   Future<void> addBooking(Map<String, dynamic> booking) async {
-    if (user != null) {
-      await _userRepository.addBooking(user!.email, booking);
+    if (user == null || user?.id == null) {
+      throw Exception('User not available');
+    }
+
+    try {
+      await _userRepository.addBooking(user!.id!, booking);
+      // Refresh user data
       await fetchUserData(user!.email);
+      update();
+    } catch (e) {
+      print('Error in UserController.addBooking: $e');
+      rethrow;
     }
   }
 

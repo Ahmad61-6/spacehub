@@ -6,6 +6,7 @@ import 'package:spacehub/view/utility/assets_path.dart';
 import 'package:spacehub/view/widgets/details_screen_carousel.dart';
 import 'package:spacehub/view/widgets/place_card.dart';
 
+import '../../controllers/date_and_time_cotroller.dart';
 import '../../core/models/work_space_model.dart';
 
 class WorkSpaceDetailsScreen extends StatefulWidget {
@@ -109,7 +110,10 @@ class _WorkSpaceDetailsScreenState extends State<WorkSpaceDetailsScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(() => SetDateAndTimeScreen());
+                      Get.find<DateTimeController>()
+                          .initialize(widget.workspace.price);
+                      Get.to(() => SetDateAndTimeScreen(),
+                          arguments: widget.workspace);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.buttonColor,

@@ -13,7 +13,6 @@ import '../../view/screens/auth/login_screen.dart';
 class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
   final UserRepository _userRepository = UserRepository();
-
   bool isLoading = false;
   UserModel? user;
 
@@ -206,6 +205,6 @@ class AuthController extends GetxController {
     }
   }
 
-// Similarly update signInWithFacebook and signInWithTwitter methods
-// ...
+  // Similarly update signInWithFacebook and signInWithTwitter methods
+  // ...
 }

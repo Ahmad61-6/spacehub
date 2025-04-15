@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spacehub/controllers/auth/auth_controller.dart';
+import 'package:spacehub/view/screens/booking_list_screen.dart';
 import 'package:spacehub/view/utility/app_colors.dart';
 
 import '../edit_profile_screen.dart';
@@ -106,7 +107,11 @@ class ProfileScreen extends StatelessWidget {
                 Divider(
                   thickness: 1,
                 ),
-                _buildListTile(Icons.card_giftcard, 'Invite friends'),
+                GestureDetector(
+                    onTap: () {
+                      Get.to(() => BookingListScreen());
+                    },
+                    child: _buildListTile(Icons.card_giftcard, 'Bookings')),
                 Divider(
                   thickness: 1,
                 ),

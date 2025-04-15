@@ -133,7 +133,7 @@ class DetailsScreenCarousel extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text("BDT $price/hour", style: const TextStyle(fontSize: 18))
+                  Text("\$$price/hour", style: const TextStyle(fontSize: 18))
                 ],
               ))
         ],

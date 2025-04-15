@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:spacehub/controllers/auth/auth_controller.dart';
+import 'package:spacehub/controllers/booking_controller.dart';
 import 'package:spacehub/controllers/card_information_controller.dart';
+import 'package:spacehub/controllers/date_and_time_cotroller.dart';
 import 'package:spacehub/controllers/main_bottom_nav_bar_controller.dart';
 import 'package:spacehub/controllers/map_controller.dart';
 import 'package:spacehub/controllers/search_controller.dart';
@@ -24,5 +26,8 @@ class ControllerBinder extends Bindings {
     Get.put(MapController());
     Get.put(WorkspaceController());
     Get.put(SearchScreenController());
+    Get.put(DateTimeController());
+    Get.put(BookingController());
+    Get.put(UserController());
   }
 }

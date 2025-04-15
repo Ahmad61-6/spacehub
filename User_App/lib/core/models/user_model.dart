@@ -42,12 +42,21 @@ class UserModel {
     }
 
     // Helper function to handle bookings data
+    // In UserModel class, update the parseBookings method:
     List<Map<String, dynamic>>? parseBookings(dynamic bookingsData) {
       if (bookingsData == null) return null;
       if (bookingsData is List) {
-        return bookingsData
-            .map((item) => Map<String, dynamic>.from(item))
-            .toList();
+        return bookingsData.map((item) {
+          final data = Map<String, dynamic>.from(item);
+          // Convert Firestore Timestamp to DateTime if needed
+          if (data['bookingDate'] is Timestamp) {
+            data['bookingDate'] = (data['bookingDate'] as Timestamp).toDate();
+          }
+          if (data['createdAt'] is Timestamp) {
+            data['createdAt'] = (data['createdAt'] as Timestamp).toDate();
+          }
+          return data;
+        }).toList();
       }
       return null;
     }

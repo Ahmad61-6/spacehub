@@ -45,12 +45,26 @@ class UserRepository {
     }
   }
 
-  Future<void> addBooking(String email, Map<String, dynamic> booking) async {
+// Update the addBooking method
+  Future<void> addBooking(String userId, Map<String, dynamic> booking) async {
     try {
-      await _firebaseService.firestore.collection('Users').doc(email).update({
+      print('Attempting to add booking for user: $userId'); // Debug
+      final userRef =
+          FirebaseFirestore.instance.collection('Users').doc(userId);
+
+      // Check if document exists first
+      final doc = await userRef.get();
+      if (!doc.exists) {
+        throw Exception('User document does not exist');
+      }
+
+      await userRef.update({
         'bookings': FieldValue.arrayUnion([booking])
       });
+
+      print('Booking added successfully'); // Debug
     } catch (e) {
+      print('Error adding booking: $e'); // Debug
       rethrow;
     }
   }
