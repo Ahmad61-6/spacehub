@@ -1,4 +1,5 @@
 # Miscellaneous
+**/*~
 *.class
 *.log
 *.pyc
@@ -32,6 +33,7 @@ firebase.json
 .pub-cache/
 .pub/
 /build/
+/android/key.properties
 
 # Symbolication related
 app.*.symbols
