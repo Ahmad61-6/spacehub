@@ -194,9 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: theme.textTheme.bodySmall,
                               ),
                               TextButton(
-                                onPressed: () {
-                                  // TODO: Contact support functionality
-                                },
+                                onPressed: () {},
                                 child: const Text('Contact Support'),
                               ),
                             ],
