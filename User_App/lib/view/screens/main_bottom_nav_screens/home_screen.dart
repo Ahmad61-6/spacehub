@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 16),
                           const Text(
-                            'No workspaces found',
+                            'No Workspaces found',
                             style: TextStyle(fontSize: 16),
                           ),
                           const SizedBox(height: 8),
