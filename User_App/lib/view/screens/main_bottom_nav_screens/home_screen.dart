@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ]),
             Icon(
               Icons.keyboard_voice_outlined,
-              color: AppColors.iconsCommonColor.withOpacity(0.8),
+              color: AppColors.iconsCommonColor.withValues(alpha: 0.8),
             ),
           ],
         ),
