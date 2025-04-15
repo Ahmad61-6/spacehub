@@ -125,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           textInputAction: TextInputAction.next,
                           decoration: const InputDecoration(
-                              hintText: 'confirm Password'),
+                              hintText: 'confirm your Password'),
                         ),
                         Row(
                           children: [
