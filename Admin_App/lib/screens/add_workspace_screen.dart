@@ -356,7 +356,7 @@ class _AddWorkspaceScreenState extends State<AddWorkspaceScreen> {
                                       textInputAction: TextInputAction.next,
                                       controller: _latController,
                                       decoration: const InputDecoration(
-                                        labelText: 'Latitude',
+                                        labelText: 'latitude',
                                         prefixIcon: Icon(Icons.map_outlined),
                                       ),
                                       keyboardType:
@@ -377,7 +377,7 @@ class _AddWorkspaceScreenState extends State<AddWorkspaceScreen> {
                                       textInputAction: TextInputAction.next,
                                       controller: _longController,
                                       decoration: const InputDecoration(
-                                        labelText: 'Longitude',
+                                        labelText: 'longitude',
                                         prefixIcon: Icon(Icons.map_outlined),
                                       ),
                                       keyboardType:
