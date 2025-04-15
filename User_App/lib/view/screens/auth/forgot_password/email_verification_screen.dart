@@ -52,7 +52,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 controller: _emailTEController,
                 validator: EmailValidator.validate,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(hintText: 'Enter your email'),
+                decoration: const InputDecoration(hintText: 'enter your email'),
               ),
               const SizedBox(
                 height: 20,
