@@ -39,7 +39,7 @@ class FirestoreService {
       final doc = await _firestore.collection('admins').doc(uid).get();
       return doc.exists;
     } catch (e) {
-      print('Error checking admin status: $e');
+      print('error checking admin status: $e');
       return false;
     }
   }
