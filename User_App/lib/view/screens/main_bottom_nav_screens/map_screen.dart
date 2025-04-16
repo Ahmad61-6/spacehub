@@ -92,12 +92,12 @@ class _MapScreenState extends State<MapScreen> {
     final workspace = Workspace(
       id: data['id']?.toString() ??
           '', // Make sure your Firestore has an 'id' field
-      name: data['name']?.toString() ?? 'No Name',
+      name: data['name']?.toString() ?? 'no Name',
       category: data['category']?.toString() ?? 'private',
       rating: (data['rating'] as num?)?.toDouble() ?? 0.0,
       reviews: (data['reviews'] as num?)?.toInt() ?? 0,
       location: data['location'] as GeoPoint? ?? const GeoPoint(0, 0),
-      locationName: data['locationName']?.toString() ?? 'No Location',
+      locationName: data['locationName']?.toString() ?? 'no Location',
       facilities: List<String>.from(data['facilities'] ?? []),
       price: (data['price'] as num?)?.toDouble() ?? 0.0,
       imageUrls: List<String>.from(
