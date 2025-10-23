@@ -80,6 +80,7 @@ class AuthController extends GetxController {
       _showErrorSnackbar(_getErrorMessage(e));
     } catch (e) {
       _showErrorSnackbar('An unexpected error occurred. Please try again.');
+      debugPrint("___----____ >>> Error in signInWithEmail: $e");
     } finally {
       setLoading(false);
     }
@@ -136,8 +137,10 @@ class AuthController extends GetxController {
       Get.offAll(() => MainBottomNavBar());
     } on FirebaseAuthException catch (e) {
       _showErrorSnackbar('Google sign in failed: ${e.message}');
+      debugPrint("___----____ >>> Error in signInWithGoogle: $e");
     } catch (e) {
       _showErrorSnackbar('Google sign in failed. Please try again.');
+      debugPrint("___----____ >>> Error in signInWithGoogle: $e");
     } finally {
       setLoading(false);
     }
